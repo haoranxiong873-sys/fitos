@@ -271,6 +271,7 @@ export type AnalyticsEventName = keyof AnalyticsEventMap;
 
 export type AnalyticsScreenName =
     | 'home'
+    | 'fitos_plan'
     | 'progress'
     | 'exercise_library'
     | 'settings'

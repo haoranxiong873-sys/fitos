@@ -158,6 +158,7 @@ const App: FC = () => {
                                     animation: 'slide_from_bottom',
                                 }}
                             />
+                            <Stack.Screen name="fitos" />
                         </Stack>
                         <Actions />
                         <RestInput />

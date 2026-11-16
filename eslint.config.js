@@ -8,6 +8,6 @@ module.exports = defineConfig([
     eslintPluginPrettierRecommended,
     ...pluginQuery.configs['flat/recommended'],
     {
-        ignores: ['dist/*'],
+        ignores: ['dist/*', 'local/**'],
     },
 ]);

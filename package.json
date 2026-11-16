@@ -22,6 +22,12 @@
     },
     "jest": {
         "preset": "jest-expo",
+        "testPathIgnorePatterns": [
+            "<rootDir>/local/"
+        ],
+        "modulePathIgnorePatterns": [
+            "<rootDir>/local/"
+        ],
         "moduleNameMapper": {
             "^@/(.*)$": "<rootDir>/src/$1"
         }
