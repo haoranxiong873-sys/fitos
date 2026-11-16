@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "templateId": "fitos-strength-12w-zh-cn-v1",
+  "locale": "zh-CN",
+  "description": "通用12周力量训练模板；不含个人测量、当前力量或起始负重",
+  "sessionDurationMinutes": { "min": 60, "max": 80, "includesWarmup": true },
+  "warmup": {
+    "generalMinutes": { "min": 5, "max": 8 },
+    "specificMinutes": { "min": 5, "max": 10 },
+    "warmupSetsExcludedFromWorkingSets": true
+  },
+  "defaultRir": { "min": 1, "max": 3 },
+  "weeklySchedule": [
+    { "weekday": 1, "kind": "strength", "sessionKey": "push" },
+    { "weekday": 2, "kind": "strength", "sessionKey": "pull" },
+    { "weekday": 3, "kind": "swim_or_active_recovery", "durationMinutes": { "min": 20, "max": 40 }, "optional": true },
+    { "weekday": 4, "kind": "strength", "sessionKey": "legs" },
+    { "weekday": 5, "kind": "strength", "sessionKey": "upper" },
+    { "weekday": 6, "kind": "basketball", "durationMinutes": { "min": 45, "max": 90 }, "adjustForRecovery": true },
+    { "weekday": 7, "kind": "rest" }
+  ],
+  "threeDayMode": {
+    "strategy": "persistent_rotation_cursor",
+    "sessionSequence": ["push", "pull", "legs", "upper"],
+    "resetCursorEachWeek": false,
+    "scheduleDays": "user_selected",
+    "advanceCursorAfter": "completed_or_user_explicitly_skipped_session"
+  },
+  "sessions": {
+    "push": {
+      "name": "Push 胸肩三头",
+      "exercises": [
+        { "key": "barbell_flat_bench_press", "name": "平板杠铃卧推", "workingSets": 3, "reps": { "min": 6, "max": 8 }, "restSeconds": { "min": 180, "max": 180 } },
+        { "key": "incline_dumbbell_press", "name": "上斜哑铃卧推", "workingSets": 3, "reps": { "min": 8, "max": 12 }, "restSeconds": { "min": 120, "max": 180 }, "targetRir": 2 },
+        { "key": "parallel_bar_dip", "name": "双杠臂屈伸", "workingSets": 3, "reps": { "min": 6, "max": 10 }, "restSeconds": { "min": 120, "max": 120 }, "initialResistance": "bodyweight" },
+        { "key": "dumbbell_lateral_raise", "name": "哑铃侧平举", "workingSets": 3, "reps": { "min": 12, "max": 20 }, "restSeconds": { "min": 60, "max": 90 } },
+        { "key": "cable_triceps_pushdown", "name": "绳索三头下压", "workingSets": 2, "reps": { "min": 10, "max": 15 }, "restSeconds": { "min": 60, "max": 90 } }
+      ]
+    },
+    "pull": {
+      "name": "Pull 背部二头",
+      "exercises": [
+        { "key": "weighted_pull_up", "name": "负重引体向上", "workingSets": 3, "reps": { "min": 5, "max": 8 }, "restSeconds": { "min": 180, "max": 180 }, "initialResistance": "bodyweight_or_user_selected_load" },
+        { "key": "chest_supported_row", "name": "胸托划船", "workingSets": 3, "reps": { "min": 8, "max": 12 }, "restSeconds": { "min": 120, "max": 120 } },
+        { "key": "lat_pulldown", "name": "高位下拉", "workingSets": 2, "reps": { "min": 10, "max": 12 }, "restSeconds": { "min": 90, "max": 120 } },
+        { "key": "reverse_fly", "name": "反向飞鸟", "workingSets": 3, "reps": { "min": 12, "max": 20 }, "restSeconds": { "min": 60, "max": 90 } },
+        { "key": "dumbbell_curl", "name": "哑铃弯举", "workingSets": 3, "reps": { "min": 8, "max": 12 }, "restSeconds": { "min": 60, "max": 90 } }
+      ]
+    },
+    "legs": {
+      "name": "Legs 腿部核心",
+      "exercises": [
+        { "key": "barbell_back_squat", "name": "杠铃深蹲", "workingSets": 3, "reps": { "min": 6, "max": 10 }, "restSeconds": { "min": 180, "max": 180 } },
+        { "key": "romanian_deadlift", "name": "罗马尼亚硬拉", "workingSets": 3, "reps": { "min": 8, "max": 10 }, "restSeconds": { "min": 120, "max": 180 } },
+        { "key": "bulgarian_split_squat", "name": "保加利亚分腿蹲", "workingSets": 2, "reps": { "min": 8, "max": 12, "perSide": true }, "restSeconds": { "min": 120, "max": 120 } },
+        { "key": "leg_curl", "name": "腿弯举", "workingSets": 2, "reps": { "min": 10, "max": 15 }, "restSeconds": { "min": 90, "max": 90 } },
+        { "key": "hanging_knee_or_leg_raise", "name": "悬垂举膝或举腿", "workingSets": 3, "reps": { "min": 10, "max": 15 }, "restSeconds": { "min": 60, "max": 90 }, "alternatives": ["悬垂举膝", "悬垂举腿"] },
+        { "key": "standing_calf_raise", "name": "站姿提踵", "workingSets": 3, "reps": { "min": 12, "max": 20 }, "restSeconds": { "min": 60, "max": 90 } }
+      ]
+    },
+    "upper": {
+      "name": "Upper 街头健身与上肢强化",
+      "exercises": [
+        { "key": "strict_pull_up", "name": "标准引体向上", "workingSets": 3, "reps": { "min": 8, "max": 12 }, "restSeconds": { "min": 120, "max": 180 } },
+        { "key": "incline_dumbbell_press", "name": "上斜哑铃卧推", "workingSets": 3, "reps": { "min": 8, "max": 12 }, "restSeconds": { "min": 120, "max": 120 } },
+        { "key": "pike_push_up", "name": "折刀俯卧撑", "workingSets": 3, "reps": { "min": 6, "max": 12 }, "restSeconds": { "min": 120, "max": 120 } },
+        { "key": "single_arm_cable_row", "name": "单臂绳索划船", "workingSets": 2, "reps": { "min": 10, "max": 12, "perSide": true }, "restSeconds": { "min": 90, "max": 90 } },
+        { "key": "dumbbell_lateral_raise", "name": "哑铃侧平举", "workingSets": 3, "reps": { "min": 12, "max": 20 }, "restSeconds": { "min": 60, "max": 90 } },
+        { "key": "tucked_l_sit", "name": "屈膝L-sit", "workingSets": 3, "durationSeconds": { "min": 10, "max": 20 }, "restSeconds": { "min": 60, "max": 60 } },
+        { "key": "ab_wheel", "name": "腹轮", "workingSets": 2, "reps": { "min": 6, "max": 12 }, "restSeconds": { "min": 60, "max": 90 } }
+      ]
+    }
+  },
+  "phases": {
+    "calibration": { "name": "适应与校准", "weeks": [1, 2], "optionalWorkingSetReductionPerExercise": 1, "requiresUserDecision": true },
+    "hypertrophy": { "name": "稳定增肌", "weeks": [3, 4, 5, 6] },
+    "recovery_review": { "name": "恢复评估", "weeks": [7], "optionalDeload": true, "requiresUserDecision": true },
+    "progression": { "name": "渐进强化", "weeks": [8, 9, 10, 11] },
+    "review": { "name": "总结评估", "weeks": [12] }
+  },
+  "weeks": [
+    { "week": 1, "phase": "calibration", "schedule": "weeklySchedule" },
+    { "week": 2, "phase": "calibration", "schedule": "weeklySchedule" },
+    { "week": 3, "phase": "hypertrophy", "schedule": "weeklySchedule" },
+    { "week": 4, "phase": "hypertrophy", "schedule": "weeklySchedule" },
+    { "week": 5, "phase": "hypertrophy", "schedule": "weeklySchedule" },
+    { "week": 6, "phase": "hypertrophy", "schedule": "weeklySchedule" },
+    { "week": 7, "phase": "recovery_review", "schedule": "weeklySchedule" },
+    { "week": 8, "phase": "progression", "schedule": "weeklySchedule" },
+    { "week": 9, "phase": "progression", "schedule": "weeklySchedule" },
+    { "week": 10, "phase": "progression", "schedule": "weeklySchedule" },
+    { "week": 11, "phase": "progression", "schedule": "weeklySchedule" },
+    { "week": 12, "phase": "review", "schedule": "weeklySchedule" }
+  ],
+  "progressionRules": {
+    "method": "double_progression",
+    "increaseWhen": "all_working_sets_reach_reps_max_with_sound_form_and_last_set_rir_at_least_1",
+    "weightedPullUpExtraKgAfterAllSetsAtEight": { "min": 2, "max": 2.5 },
+    "lowerBodyCompoundIncrementKg": { "min": 2.5, "max": 5 },
+    "upperBodyCompoundIncrement": "small_user_selected_increment",
+    "stalledBelowMinimumForConsecutiveSessions": 2,
+    "considerLoadReductionPercentAfterRecoveryReview": 5,
+    "automaticPlanMutation": false,
+    "userConfirmationRequired": true
+  }
+}

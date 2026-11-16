@@ -41,3 +41,6 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# FitOS device-only profile, goals and imported health/nutrition records
+/local/fitos/
