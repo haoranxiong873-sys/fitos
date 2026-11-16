@@ -5,8 +5,9 @@
         "jsx": "react-native",
         "paths": {
             "@/*": ["./src/*"],
-            "live-activity": ["./modules/live-activity/src/index"],
-        },
+            "live-activity": ["./modules/live-activity/src/index"]
+        }
     },
     "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
+    "exclude": ["node_modules", "local"]
 }
