@@ -1,8 +1,9 @@
 {
     "name": "skulpt-app",
-    "main": "index.ts",
+    "main": "index",
     "scripts": {
         "start": "expo start",
+        "preview:web": "expo start --web --localhost --port 8090",
         "android": "expo run:android",
         "ios": "expo run:ios",
         "db:generate": "bunx drizzle-kit generate",

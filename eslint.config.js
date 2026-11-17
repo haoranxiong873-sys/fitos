@@ -8,6 +8,11 @@ module.exports = defineConfig([
     eslintPluginPrettierRecommended,
     ...pluginQuery.configs['flat/recommended'],
     {
+        rules: {
+            'prettier/prettier': ['error', { endOfLine: 'auto' }],
+        },
+    },
+    {
         ignores: ['dist/*', 'local/**'],
     },
 ]);
