@@ -14,42 +14,57 @@ import {
     weeklyCompletionRate,
 } from '@/fitos/plan';
 import { createFitosWorkout, getExerciseProgress, getFitosOverview } from '@/fitos/storage';
+import { fitosTheme } from '@/fitos/theme';
 
 type Overview = Awaited<ReturnType<typeof getFitosOverview>>;
 type Progress = Awaited<ReturnType<typeof getExerciseProgress>>;
 
-const colors = {
-    background: '#101510',
-    card: '#1D261E',
-    text: '#F5F8F4',
-    muted: '#B2BEB3',
-    accent: '#A3E635',
-};
+const { colors, radius, space, shadow } = fitosTheme;
 const styles = StyleSheet.create({
     root: { flex: 1, backgroundColor: colors.background },
-    content: { padding: 20, paddingBottom: 48, gap: 18 },
-    title: { color: colors.text, fontSize: 30, fontWeight: '800' },
+    content: { padding: space.xl, paddingBottom: space.xxxl, gap: space.xl },
+    title: { color: colors.heading, fontSize: 30, fontWeight: '800' },
     subtitle: { color: colors.muted, fontSize: 14, lineHeight: 21 },
-    row: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-    wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-    card: { padding: 16, borderRadius: 18, backgroundColor: colors.card, gap: 8 },
-    heading: { color: colors.text, fontSize: 19, fontWeight: '700' },
+    row: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+    wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+    card: {
+        padding: space.xl,
+        borderRadius: radius.large,
+        backgroundColor: colors.card,
+        borderColor: colors.border,
+        borderWidth: 1,
+        gap: space.sm,
+        ...shadow,
+    },
+    hero: {
+        padding: space.xl,
+        borderRadius: radius.large,
+        backgroundColor: colors.primarySoft,
+        gap: space.md,
+    },
+    heading: { color: colors.heading, fontSize: 19, fontWeight: '700' },
     text: { color: colors.text, fontSize: 15, lineHeight: 22 },
     muted: { color: colors.muted, fontSize: 13, lineHeight: 19 },
     pill: {
         borderWidth: 1,
-        borderColor: '#4B594B',
-        borderRadius: 12,
-        paddingHorizontal: 12,
-        paddingVertical: 9,
+        borderColor: colors.border,
+        borderRadius: radius.pill,
+        paddingHorizontal: space.md,
+        paddingVertical: space.sm,
+        backgroundColor: colors.card,
     },
-    pillActive: { backgroundColor: colors.accent, borderColor: colors.accent },
+    pillActive: { backgroundColor: colors.primarySoft, borderColor: colors.primary },
     pillText: { color: colors.text, fontSize: 14, fontWeight: '600' },
-    pillTextActive: { color: '#172006' },
-    button: { backgroundColor: colors.accent, borderRadius: 14, padding: 15, alignItems: 'center' },
-    buttonText: { color: '#172006', fontWeight: '800', fontSize: 16 },
-    divider: { height: 1, backgroundColor: '#354035', marginVertical: 4 },
-    smallButton: { paddingVertical: 6, paddingHorizontal: 12 },
+    pillTextActive: { color: colors.primary },
+    button: {
+        backgroundColor: colors.primary,
+        borderRadius: radius.medium,
+        padding: space.lg,
+        alignItems: 'center',
+    },
+    buttonText: { color: colors.onPrimary, fontWeight: '800', fontSize: 16 },
+    divider: { height: 1, backgroundColor: colors.border, marginVertical: space.xs },
+    smallButton: { paddingVertical: space.sm, paddingHorizontal: space.md },
 });
 
 export default function FitosScreen() {
@@ -134,7 +149,7 @@ export default function FitosScreen() {
                 12周街头健身增肌模板 · 本地训练记录 · 建议需由你确认
             </Text>
 
-            <View style={styles.card}>
+            <View style={styles.hero}>
                 <Text style={styles.heading}>训练周与节奏</Text>
                 <View style={styles.row}>
                     <Pressable
@@ -187,7 +202,7 @@ export default function FitosScreen() {
                     {latestWeight ? `${latestWeight.value} ${latestWeight.unit}` : '暂无记录'}
                 </Text>
                 <Pressable onPress={() => navigate({ type: 'measurement__create' })}>
-                    <Text style={[styles.text, { color: colors.accent }]}>记录体重 ›</Text>
+                    <Text style={[styles.text, { color: colors.primary }]}>记录体重 ›</Text>
                 </Pressable>
             </View>
 
@@ -274,7 +289,7 @@ export default function FitosScreen() {
                             setTimerSeconds(0);
                         }}
                     >
-                        <Text style={[styles.text, { color: colors.accent }]}>停止计时</Text>
+                        <Text style={[styles.text, { color: colors.primary }]}>停止计时</Text>
                     </Pressable>
                 )}
             </View>

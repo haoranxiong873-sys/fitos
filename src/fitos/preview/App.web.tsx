@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
 
 import { FitosSessionKey } from '../plan';
 import {
@@ -18,11 +18,13 @@ export type Screen = 'home' | 'plan' | 'today' | 'history';
 const tabs: { key: Screen; label: string; icon: string }[] = [
     { key: 'home', label: '概览', icon: '◈' },
     { key: 'plan', label: '计划', icon: '▦' },
-    { key: 'today', label: '今日训练', icon: '●' },
+    { key: 'today', label: '训练', icon: '●' },
     { key: 'history', label: '历史', icon: '↗' },
 ];
 
 export default function PreviewApp() {
+    const { width } = useWindowDimensions();
+    const compact = width < 700;
     const [state, setState] = useState<PreviewState>(loadPreviewState);
     const [screen, setScreen] = useState<Screen>('home');
     const [message, setMessage] = useState('');
@@ -125,78 +127,93 @@ export default function PreviewApp() {
         setMessage('浏览器预览记录已清空。');
     };
 
+    const navigation = (bottom: boolean) => (
+        <View style={bottom ? styles.bottomNav : styles.topNav}>
+            {tabs.map((tab) => (
+                <Pressable
+                    key={tab.key}
+                    accessibilityRole="button"
+                    accessibilityLabel={tab.label}
+                    accessibilityState={{ selected: screen === tab.key }}
+                    onPress={() => {
+                        setScreen(tab.key);
+                        setMessage('');
+                    }}
+                    style={[styles.navItem, screen === tab.key && styles.navActive]}
+                >
+                    <Text style={[styles.navIcon, screen === tab.key && styles.navIconActive]}>
+                        {tab.icon}
+                    </Text>
+                    <Text style={[styles.navText, screen === tab.key && styles.navTextActive]}>
+                        {tab.label}
+                    </Text>
+                </Pressable>
+            ))}
+        </View>
+    );
+
     return (
-        <ScrollView style={styles.root} contentContainerStyle={styles.container}>
-            <View style={styles.between}>
-                <Text style={styles.brand}>FITOS / 训练预览</Text>
-                <Text style={styles.muted}>WEB · 本地预览</Text>
-            </View>
-            <View style={styles.nav}>
-                {tabs.map((tab) => (
-                    <Pressable
-                        key={tab.key}
-                        accessibilityRole="button"
-                        onPress={() => {
-                            setScreen(tab.key);
-                            setMessage('');
-                        }}
-                        style={[styles.navItem, screen === tab.key && styles.navActive]}
+        <View style={styles.root}>
+            <ScrollView style={styles.root} contentContainerStyle={styles.container}>
+                <View style={styles.between}>
+                    <Text style={styles.brand}>FitOS</Text>
+                    <Text style={styles.muted}>Web 预览 · 仅本地</Text>
+                </View>
+                {!compact && navigation(false)}
+                {message !== '' && (
+                    <Text
+                        accessibilityRole="alert"
+                        style={[styles.muted, { color: colors.primary }]}
                     >
-                        <Text style={[styles.navText, screen === tab.key && styles.navTextActive]}>
-                            {tab.icon} {tab.label}
-                        </Text>
-                    </Pressable>
-                ))}
-            </View>
-            {message !== '' && (
-                <Text accessibilityRole="alert" style={[styles.muted, { color: colors.lime }]}>
-                    {message}
+                        {message}
+                    </Text>
+                )}
+                {screen === 'home' && (
+                    <HomeScreen
+                        state={state}
+                        overview={overview}
+                        navigate={setScreen}
+                        selectSession={selectSession}
+                    />
+                )}
+                {screen === 'plan' && (
+                    <PlanScreen
+                        state={state}
+                        setState={setState}
+                        overview={overview}
+                        navigate={setScreen}
+                        selectSession={selectSession}
+                    />
+                )}
+                {screen === 'today' && (
+                    <TodayScreen
+                        state={state}
+                        setState={setState}
+                        navigate={setScreen}
+                        selectSession={selectSession}
+                        start={startWorkout}
+                        editSet={editSet}
+                        toggleSet={toggleSet}
+                        finish={finishWorkout}
+                        timerDeadline={timerDeadline}
+                        setTimerDeadline={setTimerDeadline}
+                        remaining={remaining}
+                        setRemaining={setRemaining}
+                    />
+                )}
+                {screen === 'history' && (
+                    <HistoryScreen
+                        state={state}
+                        overview={overview}
+                        addWeight={addWeight}
+                        clear={clear}
+                    />
+                )}
+                <Text style={[styles.muted, { textAlign: 'center', marginTop: 8 }]}>
+                    浏览器本地预览 · 无 HealthKit 连接
                 </Text>
-            )}
-            {screen === 'home' && (
-                <HomeScreen
-                    state={state}
-                    overview={overview}
-                    navigate={setScreen}
-                    selectSession={selectSession}
-                />
-            )}
-            {screen === 'plan' && (
-                <PlanScreen
-                    state={state}
-                    setState={setState}
-                    overview={overview}
-                    navigate={setScreen}
-                    selectSession={selectSession}
-                />
-            )}
-            {screen === 'today' && (
-                <TodayScreen
-                    state={state}
-                    setState={setState}
-                    navigate={setScreen}
-                    selectSession={selectSession}
-                    start={startWorkout}
-                    editSet={editSet}
-                    toggleSet={toggleSet}
-                    finish={finishWorkout}
-                    timerDeadline={timerDeadline}
-                    setTimerDeadline={setTimerDeadline}
-                    remaining={remaining}
-                    setRemaining={setRemaining}
-                />
-            )}
-            {screen === 'history' && (
-                <HistoryScreen
-                    state={state}
-                    overview={overview}
-                    addWeight={addWeight}
-                    clear={clear}
-                />
-            )}
-            <Text style={[styles.muted, { textAlign: 'center', marginTop: 8 }]}>
-                FITOS WEB PREVIEW · 浏览器本地数据 · 无 HealthKit 连接
-            </Text>
-        </ScrollView>
+            </ScrollView>
+            {compact && navigation(true)}
+        </View>
     );
 }

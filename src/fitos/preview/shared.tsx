@@ -41,8 +41,13 @@ export function SessionChooser({
                     key={key}
                     accessibilityRole="button"
                     accessibilityLabel={`选择${labels[key]}`}
+                    accessibilityState={{ selected: selected === key }}
                     onPress={() => onSelect(key)}
-                    style={[styles.pill, selected === key && styles.pillActive]}
+                    style={({ pressed }) => [
+                        styles.pill,
+                        selected === key && styles.pillActive,
+                        pressed && { opacity: 0.8 },
+                    ]}
                 >
                     <Text style={[styles.pillText, selected === key && styles.pillTextActive]}>
                         {labels[key]}
@@ -55,7 +60,11 @@ export function SessionChooser({
 
 export function PrimaryButton({ label, onPress }: { label: string; onPress: () => void }) {
     return (
-        <Pressable accessibilityRole="button" style={styles.primary} onPress={onPress}>
+        <Pressable
+            accessibilityRole="button"
+            style={({ pressed }) => [styles.primary, pressed && { opacity: 0.85 }]}
+            onPress={onPress}
+        >
             <Text style={styles.primaryText}>{label}</Text>
         </Pressable>
     );
@@ -63,7 +72,11 @@ export function PrimaryButton({ label, onPress }: { label: string; onPress: () =
 
 export function SecondaryButton({ label, onPress }: { label: string; onPress: () => void }) {
     return (
-        <Pressable accessibilityRole="button" style={styles.secondary} onPress={onPress}>
+        <Pressable
+            accessibilityRole="button"
+            style={({ pressed }) => [styles.secondary, pressed && { opacity: 0.8 }]}
+            onPress={onPress}
+        >
             <Text style={styles.secondaryText}>{label}</Text>
         </Pressable>
     );

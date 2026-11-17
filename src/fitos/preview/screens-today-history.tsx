@@ -97,24 +97,31 @@ export function TodayScreen({
                         <View key={exercise.key} style={styles.card}>
                             <Text style={styles.h3}>{exercise.name}</Text>
                             <Text style={styles.muted}>{prescription(exercise)}</Text>
+                            <View style={styles.setRow}>
+                                <Text style={[styles.muted, { width: 36 }]}>组</Text>
+                                {!exercise.durationSeconds && (
+                                    <Text style={[styles.muted, { width: 72 }]}>重量 kg</Text>
+                                )}
+                                <Text style={[styles.muted, { width: 68 }]}>
+                                    {exercise.durationSeconds ? '持续秒数' : '次数'}
+                                </Text>
+                                <Text style={styles.muted}>状态</Text>
+                            </View>
                             {state.draft?.sets[exercise.key].map((set, index) => (
                                 <View key={index} style={styles.setRow}>
-                                    <Text style={[styles.text, { width: 44 }]}>#{index + 1}</Text>
+                                    <Text style={[styles.text, { width: 36 }]}>#{index + 1}</Text>
                                     {!exercise.durationSeconds && (
-                                        <>
-                                            <TextInput
-                                                accessibilityLabel={`${exercise.name}第${index + 1}组重量`}
-                                                keyboardType="decimal-pad"
-                                                value={set.weightKg}
-                                                onChangeText={(value) =>
-                                                    editSet(exercise.key, index, 'weightKg', value)
-                                                }
-                                                placeholder="kg"
-                                                placeholderTextColor={colors.muted}
-                                                style={[styles.input, { width: 78 }]}
-                                            />
-                                            <Text style={styles.muted}>kg</Text>
-                                        </>
+                                        <TextInput
+                                            accessibilityLabel={`${exercise.name}第${index + 1}组重量`}
+                                            keyboardType="decimal-pad"
+                                            value={set.weightKg}
+                                            onChangeText={(value) =>
+                                                editSet(exercise.key, index, 'weightKg', value)
+                                            }
+                                            placeholder="kg"
+                                            placeholderTextColor={colors.muted}
+                                            style={[styles.input, { width: 72 }]}
+                                        />
                                     )}
                                     <TextInput
                                         accessibilityLabel={`${exercise.name}第${index + 1}组${exercise.durationSeconds ? '秒数' : '次数'}`}
@@ -125,11 +132,8 @@ export function TodayScreen({
                                         }
                                         placeholder={exercise.durationSeconds ? '秒' : '次'}
                                         placeholderTextColor={colors.muted}
-                                        style={[styles.input, { width: 75 }]}
+                                        style={[styles.input, { width: 68 }]}
                                     />
-                                    <Text style={styles.muted}>
-                                        {exercise.durationSeconds ? '秒' : '次'}
-                                    </Text>
                                     <Pressable
                                         accessibilityRole="button"
                                         accessibilityLabel={`${exercise.name}第${index + 1}组${set.completed ? '取消完成' : '标记完成'}`}
@@ -165,7 +169,7 @@ export function TodayScreen({
             )}
             <View style={styles.card}>
                 <Text style={styles.h2}>组间休息</Text>
-                <Text style={[styles.big, { color: colors.lime }]}>
+                <Text style={[styles.big, { color: colors.primary }]}>
                     {remaining > 0
                         ? `${Math.floor(remaining / 60)}:${String(remaining % 60).padStart(2, '0')}`
                         : '00:00'}
@@ -188,7 +192,7 @@ export function TodayScreen({
                         setRemaining(0);
                     }}
                 >
-                    <Text style={[styles.muted, { color: colors.lime }]}>停止计时</Text>
+                    <Text style={[styles.muted, { color: colors.primary }]}>停止计时</Text>
                 </Pressable>
             </View>
         </>
@@ -262,7 +266,7 @@ export function HistoryScreen({
                                                     : ((entry.kg - minWeight) /
                                                           (maxWeight - minWeight)) *
                                                       62),
-                                            backgroundColor: colors.lime,
+                                            backgroundColor: colors.primary,
                                             borderRadius: 7,
                                         }}
                                     />

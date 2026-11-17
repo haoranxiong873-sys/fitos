@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Pressable, Text, View } from 'react-native';
 
-import { FitosSessionKey, fitosPlan, getPlanWeek } from '../plan';
+import { FitosSessionKey, fitosPlan, getPlanWeek, sessionKeys } from '../plan';
 import { getPreviewAdvice, getPreviewOverview, PreviewState } from './model';
 import { Screen } from './App.web';
-import { ExerciseCard, labels, PrimaryButton, SecondaryButton, SessionChooser } from './shared';
+import { ExerciseCard, labels, PrimaryButton, SessionChooser } from './shared';
 import { styles } from './styles';
 
 type Overview = ReturnType<typeof getPreviewOverview>;
@@ -18,49 +18,78 @@ export function HomeScreen({
 }: BaseProps & {
     selectSession: (key: FitosSessionKey) => void;
 }) {
+    const phase = getPlanWeek(state.week).phaseName;
+    const nextIndex = sessionKeys.indexOf(overview.recommended);
+    const strengthDays =
+        state.mode === 4
+            ? [
+                  { day: '周一', title: labels.push, detail: '60–80 分钟' },
+                  { day: '周二', title: labels.pull, detail: '60–80 分钟' },
+                  { day: '周四', title: labels.legs, detail: '60–80 分钟' },
+                  { day: '周五', title: labels.upper, detail: '60–80 分钟' },
+              ]
+            : Array.from({ length: 3 }, (_, index) => ({
+                  day: `第${index + 1}课`,
+                  title: labels[sessionKeys[(nextIndex + index) % sessionKeys.length]],
+                  detail: '训练日自选',
+              }));
     return (
         <>
+            <View>
+                <Text style={styles.eyebrow}>欢迎来到 FitOS</Text>
+                <Text style={styles.title}>让每一次训练都算数。</Text>
+                <Text style={styles.muted}>清晰计划、认真记录，按自己的节奏进步。</Text>
+            </View>
             <View style={styles.hero}>
-                <Text style={styles.eyebrow}>你的训练控制台</Text>
-                <Text style={styles.title}>今天，继续变强。</Text>
-                <Text style={styles.muted}>
-                    12 周街头健身增肌计划 · 第 {state.week} 周 · {state.mode} 天训练节奏
+                <Text style={styles.eyebrow}>本周训练进度</Text>
+                <Text style={styles.big}>
+                    {overview.thisWeek} / {state.mode} 次
                 </Text>
                 <View style={styles.progressTrack}>
                     <View style={[styles.progressFill, { width: `${overview.completion}%` }]} />
                 </View>
-                <Text style={styles.text}>
-                    本周完成 {overview.thisWeek} / {state.mode} 次 · {overview.completion}%
+                <Text style={styles.muted}>
+                    完成率 {overview.completion}% · 正在查看第 {state.week} 周
                 </Text>
+                <View style={styles.rule} />
+                <View style={styles.between}>
+                    <Text style={styles.muted}>下一次训练（建议）</Text>
+                    <Text style={styles.h3}>{labels[overview.recommended]}</Text>
+                </View>
                 <PrimaryButton
-                    label="进入今日训练 →"
+                    label="开始训练"
                     onPress={() => {
-                        if (state.mode === 3) selectSession(overview.recommended);
+                        selectSession(overview.recommended);
                         navigate('today');
                     }}
                 />
             </View>
-            <View style={styles.row}>
+            <View style={[styles.row, { flexWrap: 'wrap' }]}>
                 <View style={styles.stat}>
-                    <Text style={styles.muted}>建议下一课</Text>
-                    <Text style={styles.h3}>
-                        {labels[state.mode === 3 ? overview.recommended : state.selected]}
-                    </Text>
+                    <Text style={styles.muted}>计划阶段 · 第 {state.week} 周</Text>
+                    <Text style={styles.h3}>{phase}</Text>
                 </View>
                 <View style={styles.stat}>
                     <Text style={styles.muted}>最近体重</Text>
-                    <Text style={styles.big}>
-                        {overview.latestWeight ? `${overview.latestWeight.kg} kg` : '—'}
+                    <Text style={styles.h3}>
+                        {overview.latestWeight ? `${overview.latestWeight.kg} kg` : '暂无记录'}
                     </Text>
                 </View>
             </View>
             <View style={styles.card}>
-                <Text style={styles.h2}>这一周怎么练</Text>
-                <Text style={styles.text}>周一 Push · 周二 Pull · 周四 Legs · 周五 Upper</Text>
+                <Text style={styles.h2}>本周训练安排</Text>
+                {strengthDays.map((item) => (
+                    <View key={item.day} style={styles.scheduleRow}>
+                        <Text style={styles.scheduleDay}>{item.day}</Text>
+                        <Text style={[styles.text, { flex: 1 }]}>{item.title}</Text>
+                        <Text style={styles.muted}>{item.detail}</Text>
+                    </View>
+                ))}
                 <Text style={styles.muted}>
-                    周三轻松游泳或主动恢复，周六篮球，周日休息。三天模式跨周轮换四种力量课，不遗漏腿部。
+                    {state.mode === 3
+                        ? '三天模式跨周轮换四种力量课；周三可轻松游泳，周六篮球，周日休息。'
+                        : '周三轻松游泳或主动恢复；周六篮球；周日休息。'}
                 </Text>
-                <SecondaryButton label="查看完整 12 周计划" onPress={() => navigate('plan')} />
             </View>
             <View style={styles.card}>
                 <Text style={styles.h2}>预览数据说明</Text>
